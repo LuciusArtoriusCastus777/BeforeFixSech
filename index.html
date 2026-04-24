@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Class - SECHTUPLE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #3498db; 
+            --dark-bg: #011640; 
+            --light-bg: #ffffff;
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+            background-color: var(--dark-bg);
+        }
+
+        /* --- NAVIGATION --- */
+        .hamburger-menu { position: fixed; top: 20px; right: 20px; z-index: 1000; }
+        .menu-toggle {
+            background: white; color: #011640; width: 45px; height: 45px;
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.3); border: none; font-size: 24px;
+        }
+        .menu-items {
+            position: absolute; top: 55px; right: 0; background: rgba(1, 22, 64, 0.95);
+            backdrop-filter: blur(10px); border-radius: 15px; width: 200px; display: none;
+            flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .menu-items.show { display: flex; animation: fadeInMenu 0.3s ease; }
+        .menu-items a { color: white; text-decoration: none; padding: 15px 20px; font-size: 0.9rem; font-weight: 600; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left; }
+
+        /* --- HEADER --- */
+        .hero-header { background-color: var(--dark-bg); color: white; padding: 40px 20px; }
+        .logo-kelas { width: 110px; height: 110px; border-radius: 50%; margin-bottom: 15px; object-fit: cover; border: 2px solid rgba(255,255,255,0.1); }
+        h1 { font-size: 2.2rem; font-weight: 800; }
+        .motto { opacity: 0.7; font-style: italic; font-size: 0.8rem; margin-top: 10px; line-height: 1.5; max-width: 600px; margin-inline: auto; }
+        
+        .social-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; opacity: 0.6; margin-top: 25px; display: block; }
+        .social-box { display: flex; justify-content: center; gap: 20px; margin: 10px 0 25px 0; }
+        .icon-img { width: 35px; height: 35px; border-radius: 8px; }
+
+        .music-player { 
+            background: rgba(255,255,255,0.05); 
+            padding: 10px 20px; 
+            border-radius: 50px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 15px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+        }
+
+        /* --- CONTAINER --- */
+        .container { max-width: 600px; margin: auto; width: 90%; }
+
+        /* --- SECTION TITLES --- */
+        .title-dark { font-size: 1.5rem; font-weight: 800; margin-bottom: 5px; border-left: 5px solid var(--dark-bg); padding-left: 15px; text-align: left; }
+        .title-light { font-size: 1.5rem; font-weight: 800; margin-bottom: 40px; border-left: 5px solid var(--accent); padding-left: 15px; text-align: left; }
+        .section-desc { text-align: justify; font-size: 0.85rem; opacity: 0.6; margin-bottom: 30px; padding-left: 20px; }
+
+        /* --- SECTIONS --- */
+        #about { background-color: var(--light-bg); color: #1a1a1a; padding: 80px 0; }
+        #structure { background-color: var(--dark-bg); color: white; padding: 80px 0; }
+        
+        .row-single { display: flex; justify-content: center; margin-bottom: 20px; }
+        .row-double { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .row-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+
+        .member-card { 
+            background: #fdfdfd; padding: 20px 10px; border-radius: 15px; 
+            border: 1px solid rgba(255,255,255,0.05); text-align: center; height: 100%; transition: 0.3s;
+        }
+        .member-img { width: 75px; height: 75px; border-radius: 15px; object-fit: cover; margin-bottom: 10px; }
+        .member-name { font-size: 0.85rem; font-weight: 700; display: block;color:#011640; }
+        .member-role { font-size: 0.65rem; color: #3489db; text-transform: uppercase; margin-top: 5px; }
+
+        .scroll-container { display: flex; overflow-x: auto; gap: 15px; padding: 20px 0; scrollbar-width: none; }
+        .scroll-container::-webkit-scrollbar { display: none; }
+        .scroll-item { flex: 0 0 140px; }
+
+        /* --- GALLERY --- */
+        #gallery { background-color: var(--light-bg); color: #1a1a1a; padding: 80px 0; }
+        .gallery-card { border-radius: 20px; overflow: hidden; background: #f8f9fb; box-shadow: 0 10px 20px rgba(0,0,0,0.05); text-align: left; margin-bottom: 25px; }
+        .gallery-img { width: 100%; height: 230px; object-fit: cover; }
+        
+        /* --- PRESTASI (LANDSCAPE & TAJAM) --- */
+        #prestasi { background-color: var(--dark-bg); color: white; padding: 80px 0; }
+        .achievement-card { margin-bottom: 40px; background: none; border: 1px solid rgba(255,255,255,0.1); border-radius: 0; overflow: hidden; }
+        .achievement-img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; display: block; border-radius: 0; }
+        .achievement-info { padding: 30px 20px; background: white; text-align: left; } 
+        .achievement-title { font-size: 1.4rem; font-weight: 800; color: #011640; text-transform: uppercase; } 
+        .achievement-desc { font-size: 0.9rem; color: #333; margin-top: 10px; line-height: 1.6; } 
+
+        /* --- PAGINATION (ANGKA ATAS, PANAH BAWAH) --- */
+        .pagination { margin-top: 30px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .page-numbers-wrapper { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .page-arrows { display: flex; gap: 10px; }
+        
+        .btn-page { background: #eee; border: none; color: #333; min-width: 35px; height: 35px; border-radius: 8px; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 0 10px; font-size: 12px; }
+        .btn-page.active { background: var(--dark-bg); color: white; }
+        #prestasi .btn-page { background: rgba(255,255,255,0.1); color: #fff; }
+        #prestasi .btn-page.active { background: var(--accent); }
+
+        /* --- FOOTER (DEMPET KIRI) --- */
+        footer { padding: 60px 20px; background: #f8f9fa; color: #555; text-align: left; border-top: 1px solid #eee; }
+        footer .container { margin-left: 0; margin-right: 0; width: 100%; max-width: none; }
+        .footer-logo { font-weight: 800; color: var(--dark-bg); font-size: 1.2rem; margin-bottom: 15px; display: block; }
+        .footer-section { margin-bottom: 25px; }
+        .footer-title { font-size: 0.75rem; font-weight: 800; color: #999; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .footer-link-box { display: flex; gap: 15px; margin-top: 10px; }
+        .footer-icon { width: 24px; height: 24px; opacity: 0.7; }
+        .footer-bottom { font-size: 0.7rem; color: #bbb; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; }
+
+        .fade-in { animation: fadeIn 0.8s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+    <nav class="hamburger-menu">
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+        <div class="menu-items" id="navItems">
+            <a href="#home">🏠 Home</a>
+            <a href="#about">✨ About Us</a>
+            <a href="#structure">👥 Struktur Kelas</a>
+            <a href="#gallery">📸 Galeri Memori</a>
+            <a href="#prestasi">🏆 Prestasi</a>
+        </div>
+    </nav>
+
+    <header id="home" class="hero-header">
+        <div class="container fade-in">
+            <img src="LOGOTUPLE.jpg" alt="Logo" class="logo-kelas">
+            <h1>WELCOME TO XII 6</h1>
+            <p class="motto">"Dalam kebersamaan kami belajar, dalam kehilangan kami menguat, and dalam persatuan kami bertahan."</p>
+            <span class="social-label">OUR SOCIAL MEDIA</span>
+            <div class="social-box">
+                <a href="https://www.instagram.com/sechstuple" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="icon-img"></a>
+                <a href="https://www.tiktok.com/@sechstuplee35" target="_blank"><img src="TIKTOK.png" class="icon-img"></a>
+            </div>
+            <div class="music-player">
+                <span id="musicStatus" style="font-size: 0.75rem;">🎵 biar enjoy</span>
+                <button onclick="toggleMusic()" style="background: white; border: none; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: 800; font-size: 10px; color: var(--dark-bg);">PLAY/PAUSE</button>
+                <audio id="classAudio" loop><source src="ONEPIECE.mp3" type="audio/mpeg"></audio>
+            </div>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="container fade-in">
+            <h2 class="title-dark">About Us</h2>
+            <p style="line-height:1.8; text-align:justify; opacity:0.9;">Dua tahun di ruang yang sama, dengan cerita yang tumbuh pelan-pelan. sekarang semuanya selesai bukan karena habis, tapi karena waktunya kita lanjut. mungkin nanti jarang bertemu, tapi bagian ini akan tetap tinggal—diam, tapi berarti. <br><br> & akan dikenang juga dijaga sebaik-baiknya.</p>
+        </div>
+    </section>
+
+    <section id="structure">
+        <div class="container fade-in">
+            <h2 class="title-light">Struktur Kelas</h2>
+            <div id="row-wali" class="row-single"></div>
+            <div id="row-lead" class="row-double"></div>
+            <div id="row-sesi" class="row-grid"></div>
+            <h3 style="text-align: left; font-size: 1rem; color: white; margin: 40px 0 10px 0; text-transform: uppercase;">Daftar Anggota (Geser ➔)</h3>
+            <div id="member-scroll" class="scroll-container"></div>
+        </div>
+    </section>
+
+    <section id="gallery">
+        <div class="container fade-in">
+            <h2 class="title-dark">Memory Gallery</h2>
+            <p class="section-desc">Galeri ini menyimpan potongan waktu yang pernah kita lalui bersama—tentang tawa, cerita, dan perjalanan yang membentuk kebersamaan hingga hari ini.</p>
+            <div id="gallery-container"></div>
+            <div class="pagination">
+                <div id="gallery-page-numbers" class="page-numbers-wrapper"></div>
+                <div class="page-arrows">
+                    <button onclick="prevGalleryPage()" class="btn-page">« PREV</button>
+                    <button onclick="nextGalleryPage()" class="btn-page">NEXT »</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="prestasi">
+        <div class="container fade-in">
+            <h2 class="title-light">Our Achievements</h2>
+            <p style="text-align:justify;font-size: 0.85rem; opacity: 0.6; margin-bottom: 30px; padding-left: 20px;">Bagi SECHTUPLE, setiap prestasi adalah hasil dari kerja sama, usaha, dan semangat untuk terus berkembang. Bukan hanya tentang pencapaian, tapi juga perjalanan yang kita lalui bersama.</p>
+            <div id="prestasi-container"></div>
+            <div class="pagination">
+                <div id="prestasi-page-numbers" class="page-numbers-wrapper"></div>
+                <div class="page-arrows">
+                    <button onclick="prevPrestasiPage()" class="btn-page">« PREV</button>
+                    <button onclick="nextPrestasiPage()" class="btn-page">NEXT »</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <span class="footer-logo">SECHTUPLE XII-6</span>
+            <div class="footer-section">
+                <span class="footer-title">Created By</span>
+                <p style="font-weight: 600;">rama</p>
+                <div class="footer-link-box">
+                    <a href="https://instagram.com/ramos_user" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="footer-icon"></a>
+                    <a href="https://tiktok.com/@ramos_user" target="_blank"><img src="TIKTOK.png" class="footer-icon"></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <span class="footer-title">Contact</span>
+                <p style="font-size: 0.85rem; line-height: 1.5;">SMAN 4 KARAWANG<br>Jl. Jend. Ahmad Yani, Kelurahan Karangpawitan, Kecamatan Karawang Barat, Kabupaten Karawang, Provinsi Jawa Barat. </p>
+            </div>
+            <div class="footer-bottom">© 2026 SECHTUPLE. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        const waliKelas = { name: "Amoy Siti Maemunah, SPd, Gr.", role: "Wali Kelas", img: "https://via.placeholder.com/100", ig: "#" };
+        const leads = [
+            { name: "Rizki Maulana", role: "Ketua", img: "29RIZKI.JPG", ig: "#" },
+            { name: "Bagas Maulana", role: "Wakil", img: "https://via.placeholder.com/100", ig: "#" }
+        ];
+        const sesiMembers = [
+            { name: "Fatikah Aryly Putri", role: "Sekretaris I", img: "9FATIKAH.JPG", ig: "#" },
+            { name: "Rebeca C.F.N.N", role: "Sekretaris II", img: "26REBECA.JPG", ig: "#" },
+            { name: "Alizha Viarda T.", role: "Bendahara I", img: "4ALIZHA.JPG", ig: "#" },
+            { name: "Keysa Nuralifa", role: "Bendahara II", img: "14KEYSA.JPG", ig: "#" },
+            { name: "Rifky Hafizh Alfarizi", role: "Kebersihan I", img: "28RIFKY.JPG", ig: "#" },
+            { name: "Zepanya Agustina P.", role: "Kebersihan II", img: "36ZEPANYA.JPG", ig: "#" },
+            { name: "Hasbi Nur Yassin", role: "Sesi Olga I", img: "11HASBI.JPG", ig: "#" },
+            { name: "Bara Satria Pamungkas", role: "Sesi Olga II", img: "6BARA.JPG", ig: "#" },
+            { name: "Naufal Listyo A.", role: "Keamanan I", img: "21NAUFAL.JPG", ig: "#" },
+            { name: "Firdan Rizkiansyah", role: "Keamanan II", img: "10FIRDAN.JPG", ig: "#" },
+            { name: "Julita Awaliyah", role: "Keagamaan I", img: "12JULITA.JPG", ig: "#" },
+            { name: "Yauzan Ihsan", role: "Keagamaan II", img: "35YAUZAN.JPG", ig: "#" }
+        ];
+        const regularMembers = [
+            { name: "Adzanea Tifany M.W", role: "Anggota", img: "1ADZANEA.JPG", ig: "#" },
+            { name: "Agni Nur Amalia", role: "Anggota", img: "2AGNI.JPG", ig: "#" },
+            { name: "Alia R.E.D", role: "Anggota", img: "3ALIA.JPG", ig: "#" },
+            { name: "Citra Mutia R.", role: "Anggota", img: "7CITRA.JPG", ig: "#" },
+            { name: "Faiqa Keisya F.", role: "Anggota", img: "8FAIQA.JPG", ig: "#" },
+            { name: "Keisya Fazila", role: "Anggota", img: "13KEISYA.JPG", ig: "#" },
+            { name: "Laura Fitria N.", role: "Anggota", img: "15LAURA.JPG", ig: "#" },
+            { name: "M. Lery Arravi F.", role: "Anggota", img: "16LERY.JPG", ig: "#" },
+            { name: "Muhammad Noval", role: "Anggota", img: "17NOVAL.JPG", ig: "#" },
+            { name: "Mutiara Priscillia P.", role: "Anggota", img: "18MUTIARA.JPG", ig: "#" },
+            { name: "Nabil Afnanda A.", role: "Anggota", img: "19NABIL.JPG", ig: "#" },
+            { name: "Nadyya Rahmatil M.", role: "Anggota", img: "20NADYYA.JPG", ig: "#" },
+            { name: "Nuraena", role: "Anggota", img: "22NURAENA.JPG", ig: "#" },
+            { name: "Nurbadriyah", role: "Anggota", img: "23NUR.JPG", ig: "#" },
+            { name: "Purie Azzakhri F.", role: "Anggota", img: "24PURIE.JPG", ig: "#" },
+            { name: "Rama Mardian", role: "Anggota", img: "25RAMA.JPG", ig: "#" },
+            { name: "Riesya Willaputri O.", role: "Anggota", img: "27RIESYA.JPG", ig: "#" },
+            { name: "Shavina Damalena", role: "Anggota", img: "30SHAVINA.JPG", ig: "#" },
+            { name: "Sri Devi", role: "Anggota", img: "31DEVI.JPG", ig: "#" },
+            { name: "Sultan Dhira A.", role: "Anggota", img: "32SULTAN.JPG", ig: "#" },
+            { name: "Syahidah Aisyah", role: "Anggota", img: "33SYAHIDAH.JPG", ig: "#" },
+            { name: "Titik Tri S.", role: "Anggota", img: "34TITIK.JPG", ig: "#" },
+        ];
+
+        const allPhotos = Array(42).fill({ title: "Momen Pertama kali", desc: "Keterangan memori kelas kalian yang tak terlupakan.", img: "FOTBAR.jpg" });
+        allPhotos[0] = { title: "Dimana Semua Di Mulai", desc: "Awal dari perjalanan panjang kita. Satu frame, ribuan cerita, dan langkah pertama sebagai satu keluarga  SECHTUPLE.", img: "FOTBAR1.jpg" };
+        allPhotos[1] = { title: "Brotherhood:Day One", desc: "Awal dari segala kerusuhan dan tawa. Solid dari hari pertama sampai seterusnya.", img: "FOTBAR2.jpg" };
+        allPhotos[2] = { title: "First rain, First girl", desc: "Kenangan paling seru seringkali datang dari hal-hal yang ga di rencanakan kaya waktu hujan di foto ini", img: "FOTBAR3.jpg" };
+        allPhotos[3] = { title: "Foto pertama, Walas pertama", desc: "Foto ini adalah awal dari cerita—foto pertama bersama wali kelas dan teman-teman sekelas, saat semuanya masih terasa baru.", img: "FOTBAR4.jpg" };
+        allPhotos[4] = { title: "Keberkahan Dalam Kebersamaan", desc: "Mengambil berkah di hari besar, menciptakan kenangan di sela-sela kegiatan sekolah.", img: "FOTBAR5.jpg" };
+        allPhotos[5] = { title: "Edisi Abis Maulidan", desc: " Capek abis acara mah urusan nanti, yang penting mah gaya dulu bareng-bareng.", img: "FOTBAR6.jpg" };
+        allPhotos[6] = { title: "Pejuang UTS", desc: "Ritual wajib biar nggak stres abis UTS. Bukannya langsung pulang ke rumah, malah pada nyangkut dulu buat bikin kenangan.", img: "FOTBAR7.jpg" };
+        allPhotos[7] = { title: "Hari Guru Vibes!", desc: "Momen seru-seruan bareng guru tercinta. Capek ikut upacara dan acara sekolah langsung ilang kalau udah kumpul lengkap kayak gini.", img: "FOTBAR8.jpg" };
+        allPhotos[8] = { title: "Sporty Tapi Capek", desc: "Muka-muka sisa tenaga abis disiksa tes lari. Kaki boleh gemeteran, napas boleh senin-kamis, tapi kalau diajak foto di tangga mah tetep harus kelihatan gaya!", img: "FOTBAR9.jpg" };
+        allPhotos[9] = { title: "Batik Day!", desc: "Edisi hari batik nasional. Bukannya belajar di kelas, malah asik sesi pemotretan di lapangan basket. Emang paling bener batik dipaduin sama pose andalan kita.", img: "FOTBAR10.jpg" };
+        allPhotos[10] = { title: "Mandat Terlaksana!", desc: "Edisi jadi petugas upacara, dari yang deg-degan takut salah baris sampe lega pas udah bubar. Biarpun panas-panasan, yang penting tampil rapi dan sukses bikin bangga SECHTUPLE!", img: "FOTBAR11.jpg" };
+        allPhotos[11] = { title: "Kenyang Hati, Kenyang Perut", desc: "HBD buat temen kita! Emang nggak ada yang ngalahin serunya makan-makan bareng sekelas. Bukan cuma soal makanannya, tapi soal kumpul-kumpulnya yang bikin betah.", img: "FOTBAR12.jpg" };
+        allPhotos[12] = { title: "Vibes Merah Putih", desc: "Panas-panasan di lapangan demi memeriahkan 17-an. Muka udah mulai kusam tapi semangat tetep gaspol, yang penting mah kebersamaannya dapet banget!.", img: "FOTBAR13.jpg" };
+        allPhotos[13] = { title: "Jogja Calling, Body Loading", desc: "Belum juga sampe Jogja, energi udah pada abis duluan. Pose tidur paling estetik ya cuma ada di bus pariwisata begini. Bangun-bangun udah sampe tujuan ya!", img: "FOTBAR14.jpg" };
+        allPhotos[14] = { title: "Foto Abadi", desc: "Momen langka sekelas dandan rapi dan bener buat foto ijazah. Di balik foto yang kelihatan tenang ini, aslinya mah tetep aja pada ribet benerin rambut sama dasi biar nggak gagal di dokumen seumur hidup!.", img: "FOTBAR15.jpg" };
+        allPhotos[15] = { title: "Sesi Cuci Otak", desc: "Ekspresi lega setelah perang kertas ujian selesai. Urusan bener atau salah belakangan, yang penting SECHTUPLE tetep harus eksis di tengah lapangan!.", img: "FOTBAR16.jpg" };
+        allPhotos[16] = { title: "Spesial Bareng Walas!", desc: "Foto langka bareng wali kelas pertama dan terakhir kita. Dari awal dibimbing sampe akhirnya mau lulus, mereka saksi bisu perjalanan seru kita di sekolah.", img: "FOTBAR17.jpg" };
+        allPhotos[17] = { title: "Trofi Di Tangan, Senyum Di Wajah", desc: "Akhirnya usaha kita nggak sia-sia. Jerih payah latihan kebayar lunas sama piala ini. Momen selebrasi bareng sekelas di ruangan, pamer trofi sekalian pamer kekompakan. Solid terus ya!", img: "FOTBAR18.jpg" };
+        allPhotos[18] = { title: "Art Class Survivors", desc: "Muka boleh cemong, tangan boleh kotor karena cat, tapi semangat praktek Seni Budaya tetep gaspol. Ini dia bukti totalitas anak-anak SECHTUPLE demi nilai bagus dan (yang paling penting) pengalaman seru bareng-bareng!", img: "FOTBAR19.jpg" };
+        allPhotos[19] = { title: "Tamu Spesial Walas", desc: "Edisi kondangan bareng ke syukuran khitanan anak wali kelas kita. Bukannya bantuin cuci piring, kita malah sibuk menuhin tempat duduk buat foto-foto. Yang penting perut kenyang, hati senang!", img: "FOTBAR20.jpg" };
+        allPhotos[20] = { title: "Survivor Ujian", desc: "Penampakan para pejuang nilai setelah kertas jawaban dikumpulin. Muka boleh agak kusut, tapi kalau diajak kumpul lengkap begini mah semangatnya balik lagi!", img: "FOTBAR21.jpg" };
+        allPhotos[21] = { title: "Sehat Bareng, Eksis Bareng", desc: "Momen abis goyang bareng pas pembiasaan senam. Bukannya langsung masuk kelas, malah pada nyangkut buat bikin kenangan. Kapan lagi kan sehat bareng satu server!", img: "FOTBAR22.jpg" };
+        allPhotos[22] = { title: "Bandung Calling!", desc: "Edisi para pejantan SECHTUPLE nyari udara sejuk. Nggak perlu rencana ribet, yang penting gaspol bareng-bareng. Dari sini petualangan dimulai, siap-siap buat seru-seruan di Kota Kembang!", img: "FOTBAR23.jpg" };
+        allPhotos[23] = { title: "Basket Vibes!", desc: "Penutupan olahraga yang paling bener ya foto bareng begini. Keringetan dikit nggak ngaruh, yang penting kekompakan di lapangan tetep terjaga. SECHTUPLE emang jagonya kalau soal ginian!", img: "FOTBAR24.jpg" };
+        allPhotos[24] = { title: "Our Colorfull Masterpiece", desc: "Menumpahkan kreativitas di atas kain! Ini dia deretan hasil tie dye buatan kita sendiri. Nggak cuma soal bajunya, tapi soal proses seru pas kita eksperimen bareng warna. Kompak itu nggak harus sama, tapi bisa juga beragam warna kayak gini!", img: "FOTBAR25.jpg" };
+        allPhotos[25] = { title: "Showtime SECHTUPLE", desc: "Edisi tampil totalitas buat ngeramein acara sekolah. Dari yang latihan serius sampe akhirnya tampil seru-seruan bareng wali kelas. Capek sih, tapi liat hasilnya begini mah worth it banget!", img: "FOTBAR26.jpg" };
+        allPhotos[26] = { title: "Baller Mode:ON", desc: "Ritual wajib abis tes basket: foto bareng satu server di lapangan. Muka-muka lega karena akhirnya tugas olahraga kelar juga. SECHTUPLE emang jagonya kalau soal solidaritas di lapangan!", img: "FOTBAR27.jpg" };
+        allPhotos[27] = { title: "English Class", desc: "Penampakan SECHTUPLE abis dapet asupan Bahasa Inggris. Otak boleh panas, tapi kalau udah diajak foto bareng sekelas di dalem kelas gini, langsung auto-pose!", img: "FOTBAR28.jpg" };
+        allPhotos[28] = { title: "Saudagar SECHTUPLE", desc: "Edisi jadi pengusaha dadakan di acara P5. Dari yang ribet nyiapin jualan sampe teriak-teriak nawarin dagangan ke adek kelas. Lelah jualan langsung ilang pas liat dagangan ludes (dan dapet foto kece ini)!", img: "FOTBAR29.jpg" };
+        allPhotos[29] = { title: "Gathering Ramadhan SECHTUPLE", desc: "Bukannya bukber di resto yang ribet booking tempat, kita mah mending geruduk rumah temen aja. Lebih bebas, lebih rame, dan yang pasti lebih kerasa kekeluargaannya. Makasih ya yang udah mau direpotin rumahnya!", img: "FOTBAR30.jpg" };
+        allPhotos[30] = { title: "Jogja Memories", desc: "Edisi basah-basahan bareng SECHTUPLE di candi. Payung udah siap, gaya udah oke, tinggal nikmatin vibes Jogja yang selalu bikin kangen. Satu kata buat momen ini: Klasik!", img: "FOTBAR31.jpg" };
+        allPhotos[31] = { title: "Ramadhan Vibes!", desc: "Belum puas kalau cuma bukber sekali. Kali ini kumpul lagi buat nunggu waktu adzan bareng. Bukan cuma cari kenyang, tapi emang dasarnya kita doyan kumpul dan ngobrol lama-lama. Full senyum pokoknya kalau udah ketemu makanan!.", img: "FOTBAR32.jpg" };
+        allPhotos[32] = { title: "Semangat Hardiknas!", desc: "Momen Hardiknas yang penuh warna. Seneng banget bisa ngerayain hari besar ini bareng temen-temen sekelas dengan outfit terbaik kita. Pendidikan bukan cuma soal angka, tapi soal kebersamaan kayak gini.", img: "FOTBAR33.jpg" };
+        allPhotos[33] = { title: "Forever In Our Hearts", desc: "SECHTUPLE kehilangan salah satu kepingan puzzle-nya. Terima kasih ya sudah pernah hadir dan mengukir tawa bareng kita di kelas. Tempatmu sudah lebih indah sekarang, tapi memori tentangmu bakal selalu punya ruang spesial di hati kami❤️. Istirahat yang tenang, kawan.", img: "FOTBAR34.jpg" };
+        allPhotos[34] = { title: "P5 Survivors!", desc: "Capek sih ngerjain projek sana-sini, tapi kalau udah kumpul lengkap begini mah semangatnya balik lagi. Ini dia bukti kekompakan SECHTUPLE pas lagi pusing-pusingnya tapi tetep bisa pasang pose paling kece!", img: "FOTBAR35.jpg" };
+        allPhotos[35] = { title: "New Year, New Memories!", desc: "Rayain pergantian tahun dengan perut kenyang dan hati senang. Momen kumpul santai di rumah temen yang bikin hubungan kita makin deket. Tahun baru, semangat baru, tapi squad tetep yang lama!", img: "FOTBAR36.jpg" };
+        allPhotos[36] = { title: "Last Splash!", desc: "Akhirnya, tugas olahraga terakhir resmi tuntas! Tes renang yang bikin kedinginan dan pegel-pegel dibayar lunas sama sesi main air bareng. Penutupan yang seger banget buat perjalanan olahraga kita!", img: "FOTBAR37.jpg" };
+        allPhotos[37] = { title: "The Core Of The Rhythm!", desc: "Momen pas kita semua unjuk gigi di depan lapangan sebagai instruktur. Aura semangatnya nular ke semua peserta senam. Makasih buat pengalamannya, ini bakal jadi salah satu kenangan paling epic di sekolah!", img: "FOTBAR38.jpg" };
+        allPhotos[38] = { title: "Final Chapter:Accomplished!", desc: "Akhirnya sampai juga di titik ini. Penampakan wajah-wajah lega sekaligus haru setelah ngerjain soal ujian terakhir di sekolah. Seragam putih abu ini mungkin bakal ganti, tapi cerita yang kita tulis bareng-bareng di sini bakal abadi selamanya.", img: "FOTBAR39.jpg" };
+        allPhotos[39] = { title: "Pride & Victory:17 August", desc: "Dari barisan upacara langsung meluncur ke podium juara! Momen spesial pas kita pake seragam kebanggaan buat ngerayain hari jadi Indonesia. Nggak cuma rapi di barisan, kita juga terbukti tangguh pas kompetisi. Merdeka selamanya!", img: "FOTBAR40.jpg" };
+        allPhotos[40] = { title: "Stuck With You, SECHTUPLE", desc: "Edisi ninggalin jejak lewat stiker dan foto bareng satu angkatan. Seneng banget bisa ngerasain momen se-solid ini sebelum nanti kita mencar ke tujuan masing-masing. One for all, all for SECHTUPLE!", img: "FOTBAR41.jpg" };
+        allPhotos[41] = { title: "Splash Of Happines", desc: "Penampakan kita abis basah-basahan total di water party. Biarpun baju lepek dan rambut berantakan, tapi tawanya nggak bisa bohong. Cara paling pecah buat ngerayain kebersamaan kita di lapangan kebanggaan!", img: "FOTBAR42.jpg" };
+        
+
+        const allPrestasi = [
+            { title: "Kemenangan Milik Bersama", desc: "Juara 2 rasa Juara 1! Kerja keras tim futsal kita di turnamen antar angkatan membuahkan hasil yang membanggakan. Terima kasih buat para pemain yang udah berjuang di lapangan dan suporter yang nggak berhenti teriak dari pinggir lapangan. Satu trofi lagi buat lemari prestasi SECHTUPLE!", img: "PRESTASI1.jpg" },
+            { title: "Independece Day Champions!", desc: "Merayakan kemerdekaan dengan kemenangan manis di lapangan futsal! SECHTUPLE berhasil membawa pulang piala Juara 3 dalam turnamen memperingati HUT RI. Semangat juang pahlawan nular ke kekompakan tim kita hari ini. Merdeka!", img: "PRESTASI2.jpg" },
+            { title: "P5 Victory!", desc: "Siapa bilang projek sekolah cuma formalitas? Kita buktiin kalau kreativitas SECHTUPLE nggak ada tandingannya! Berhasil menyabet gelar Juara 1 di ajang P5 sekolah adalah bukti kerja keras dan ide gila kita semua. First place looks good on us!", img: "PRESTASI3.jpg" },
+        ];
+
+        function initStructure() {
+            const card = (m) => `<a href="${m.ig}" target="_blank" style="text-decoration:none; color:inherit; width:100%;"><div class="member-card"><img src="${m.img}" class="member-img"><span class="member-name">${m.name}</span><span class="member-role">${m.role}</span></div></a>`;
+            document.getElementById('row-wali').innerHTML = `<div style="width:50%">${card(waliKelas)}</div>`;
+            leads.forEach(m => document.getElementById('row-lead').innerHTML += card(m));
+            sesiMembers.forEach(m => document.getElementById('row-sesi').innerHTML += card(m));
+            regularMembers.forEach(m => { document.getElementById('member-scroll').innerHTML += `<div class="scroll-item">${card(m)}</div>`; });
+        }
+
+        let currentGalleryPage = 1; const photosPerPage = 5;
+        function displayGallery() {
+            const container = document.getElementById('gallery-container');
+            const pageNumbers = document.getElementById('gallery-page-numbers');
+            container.innerHTML = ""; pageNumbers.innerHTML = "";
+            let items = allPhotos.slice((currentGalleryPage-1)*photosPerPage, currentGalleryPage*photosPerPage);
+            items.forEach(p => { container.innerHTML += `<div class="gallery-card fade-in"><img src="${p.img}" class="gallery-img"><div style="padding:20px;"><h3 style="color: var(--dark-bg);">${p.title}</h3><p style="font-size:0.85rem; opacity:0.7; margin-top:5px;">${p.desc}</p></div></div>`; });
+            for (let i = 1; i <= Math.ceil(allPhotos.length/photosPerPage); i++) { pageNumbers.innerHTML += `<button onclick="goToGalleryPage(${i})" class="btn-page ${i===currentGalleryPage?'active':''}">${i}</button>`; }
+        }
+
+        let currentPrestasiPage = 1; const prestasiPerPage = 2; 
+        function displayPrestasi() {
+            const container = document.getElementById('prestasi-container');
+            const pageNumbers = document.getElementById('prestasi-page-numbers');
+            container.innerHTML = ""; pageNumbers.innerHTML = "";
+            let items = allPrestasi.slice((currentPrestasiPage-1)*prestasiPerPage, currentPrestasiPage*prestasiPerPage);
+            items.forEach(p => { container.innerHTML += `<div class="achievement-card fade-in"><img src="${p.img}" class="achievement-img"><div class="achievement-info"><h3 class="achievement-title">${p.title}</h3><p class="achievement-desc">${p.desc}</p></div></div>`; });
+            for (let i = 1; i <= Math.ceil(allPrestasi.length/prestasiPerPage); i++) { pageNumbers.innerHTML += `<button onclick="goToPrestasiPage(${i})" class="btn-page ${i===currentPrestasiPage?'active':''}">${i}</button>`; }
+        }
+
+        function goToGalleryPage(p) { currentGalleryPage = p; displayGallery(); window.location.href="#gallery"; }
+        function nextGalleryPage() { if(currentGalleryPage < Math.ceil(allPhotos.length/photosPerPage)) { currentGalleryPage++; displayGallery(); }}
+        function prevGalleryPage() { if(currentGalleryPage > 1) { currentGalleryPage--; displayGallery(); }}
+        function goToPrestasiPage(p) { currentPrestasiPage = p; displayPrestasi(); window.location.href="#prestasi"; }
+        function nextPrestasiPage() { if(currentPrestasiPage < Math.ceil(allPrestasi.length/prestasiPerPage)) { currentPrestasiPage++; displayPrestasi(); }}
+        function prevPrestasiPage() { if(currentPrestasiPage > 1) { currentPrestasiPage--; displayPrestasi(); }}
+
+        initStructure(); displayGallery(); displayPrestasi();
+        function toggleMenu() { document.getElementById('navItems').classList.toggle('show'); }
+        const audio = document.getElementById('classAudio');
+        function toggleMusic() {
+            if (audio.paused) { audio.play(); document.getElementById('musicStatus').innerText = "🎶 Playing..."; }
+            else { audio.pause(); document.getElementById('musicStatus').innerText = "🎵 Paused"; }
+        }
+    </script>
+</body>
+</html>
