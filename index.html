@@ -47,15 +47,28 @@
         .social-box { display: flex; justify-content: center; gap: 20px; margin: 10px 0 25px 0; }
         .icon-img { width: 35px; height: 35px; border-radius: 8px; }
 
+        /* --- MODIFIKASI MUSIC PLAYER --- */
         .music-player { 
             background: rgba(255,255,255,0.05); 
-            padding: 10px 20px; 
-            border-radius: 50px; 
+            padding: 15px 25px; 
+            border-radius: 12px; 
             display: inline-flex; 
+            flex-direction: column;
             align-items: center; 
-            gap: 15px; 
+            gap: 10px; 
             border: 1px solid rgba(255,255,255,0.1); 
         }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-music {
+            background: white; border: none; padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: 800; font-size: 10px; color: var(--dark-bg);
+        }
+        /* ------------------------------ */
 
         /* --- CONTAINER --- */
         .container { max-width: 600px; margin: auto; width: 90%; }
@@ -166,7 +179,6 @@
 
             #row-sesi { grid-template-columns: repeat(4, 1fr) !important; gap: 25px !important; }
             
-            /* Gallery Grid 3 Kolom (Sesuai Request: Atas 3, Bawah 3) */
             #gallery-container { 
                 display: grid; 
                 grid-template-columns: repeat(3, 1fr); 
@@ -206,12 +218,20 @@
                 <a href="https://www.instagram.com/sechstuple" target="_blank"><img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" class="icon-img"></a>
                 <a href="https://www.tiktok.com/@sechstuplee35" target="_blank"><img src="TIKTOK.png" class="icon-img"></a>
             </div>
-            <div class="music-player">
-                <span id="musicStatus" style="font-size: 0.75rem;">🎵 biar enjoy</span>
-                <button onclick="toggleMusic()" style="background: white; border: none; padding: 6px 15px; border-radius: 20px; cursor: pointer; font-weight: 800; font-size: 10px; color: var(--dark-bg);">PLAY/PAUSE</button>
-                <audio id="classAudio" loop><source src="ONEPIECE.mp3" type="audio/mpeg"></audio>
+            
+           <div class="music-player">
+    <div id="musicDisplay" style="margin-bottom: 5px;">
+        <span id="musicStatus" style="font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; color: #fffff;">🎵 biar enjoy</span>
+    </div>
+    <div class="music-controls">
+        <button onclick="prevSong()" class="btn-music" style="background: rgba(255,255,255,0.1); color: white;">back</button>
+        <button id="playBtn" onclick="toggleMusic()" class="btn-music" style="background: white; color: var(--dark-bg); min-width: 80px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">PLAY</button>
+        <button onclick="nextSong()" class="btn-music" style="background: rgba(255,255,255,0.1); color: white;">️next</button>
+    </div>
+    <audio id="classAudio"></audio>
+</div>
+
             </div>
-        </div>
     </header>
 
     <section id="about">
@@ -393,7 +413,6 @@
         }
 
         let currentGalleryPage = 1; 
-        // Logic photosPerPage: 6 untuk laptop (3x2), 5 untuk HP
         const photosPerPage = window.innerWidth >= 1024 ? 6 : 5; 
 
         function displayGallery() {
@@ -424,15 +443,72 @@
 
         initStructure(); displayGallery(); displayPrestasi();
         function toggleMenu() { document.getElementById('navItems').classList.toggle('show'); }
-        const audio = document.getElementById('classAudio');
-        function toggleMusic() {
-            if (audio.paused) { audio.play(); document.getElementById('musicStatus').innerText = "🎶 Playing..."; }
-            else { audio.pause(); document.getElementById('musicStatus').innerText = "🎵 Paused"; }
-        }
-        
-        // Refresh gallery saat resize layar biar grid 6 atau 5 nya update otomatis
+
+// --- LOGIC MUSIK PLAYLIST SECHTUPLE ---
+const playlist = [
+    "SORROWFULL.mp3", 
+    "LAURA.mp3", 
+];
+
+let currentSongIndex = 0;
+let isStarted = false; // Untuk ngecek apakah musik sudah pernah di-play
+const audio = document.getElementById('classAudio');
+const musicStatus = document.getElementById('musicStatus');
+const playBtn = document.getElementById('playBtn');
+
+function loadSong(index) {
+    audio.src = playlist[index];
+    // Hanya update teks jika musik sudah mulai jalan
+    if (isStarted) {
+        musicStatus.innerText = `🎶 Playing: Song ${index + 1}`;
+    }
+}
+
+// Load awal tanpa mengubah teks "biar enjoy"
+loadSong(currentSongIndex);
+
+function toggleMusic() {
+    if (audio.paused) {
+        audio.play();
+        isStarted = true; // Set true saat pertama kali tombol di-klik
+        musicStatus.innerText = `🎶 Playing: Song ${currentSongIndex + 1}`;
+        playBtn.innerText = "PAUSE";
+        playBtn.style.background = "#fff"; // Berubah warna saat play
+        playBtn.style.color = "var(--dark-bg)";
+    } else {
+        audio.pause();
+        musicStatus.innerText = "||";
+        playBtn.innerText = "PLAY";
+        playBtn.style.background = "white";
+        playBtn.style.color = "var(--dark-bg)";
+    }
+}
+
+function nextSong() {
+    isStarted = true;
+    currentSongIndex++;
+    if (currentSongIndex >= playlist.length) currentSongIndex = 0;
+    loadSong(currentSongIndex);
+    audio.play();
+    playBtn.innerText = "PAUSE";
+}
+
+function prevSong() {
+    isStarted = true;
+    currentSongIndex--;
+    if (currentSongIndex < 0) currentSongIndex = playlist.length - 1;
+    loadSong(currentSongIndex);
+    audio.play();
+    playBtn.innerText = "PAUSE";
+}
+
+audio.onended = function() {
+    nextSong();
+};
+
+        // ------------------------------------
+
         window.onresize = function() { 
-            // Cek ulang lebar layar tanpa reload total agar tidak reset posisi scroll
             const newPerPage = window.innerWidth >= 1024 ? 6 : 5;
             if(newPerPage !== photosPerPage) {
                 location.reload(); 
